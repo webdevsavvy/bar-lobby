@@ -79,7 +79,6 @@ export class EngineContentAPI extends AbstractContentAPI {
             method: "get",
             responseType: "arraybuffer",
             headers: { "Content-Type": "application/7z" },
-            adapter: require("axios/lib/adapters/http"),
             onDownloadProgress: (progress) => {
                 downloadInfo.currentBytes = progress.loaded;
                 downloadInfo.totalBytes = progress.total;
