@@ -91,6 +91,7 @@ export abstract class AbstractBattle {
         watch(
             () => this.battleOptions.gameVersion,
             (gameVersion) => {
+                // TODO: when prd supports it, dl specific game version here
                 api.content.game.updateGame();
             },
             {
@@ -101,7 +102,7 @@ export abstract class AbstractBattle {
         watch(
             () => this.battleOptions.map,
             (mapScriptName) => {
-                api.content.maps.downloadMapByScriptName(mapScriptName);
+                api.content.maps.installMapByScriptName(mapScriptName);
             },
             {
                 immediate: true,

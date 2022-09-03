@@ -1,7 +1,7 @@
 import { ipcRenderer } from "electron";
 import * as fs from "fs";
 import * as path from "path";
-import { createRouter, createWebHashHistory, Router } from "vue-router";
+import { createMemoryHistory, createRouter, Router } from "vue-router";
 
 import { AlertsAPI } from "@/api/alerts";
 import { AudioAPI } from "@/api/audio";
@@ -59,13 +59,14 @@ export async function apiInit() {
     api.session = new SessionAPI();
 
     api.router = createRouter({
-        history: createWebHashHistory(),
+        history: createMemoryHistory(),
         routes: routes,
     });
 
-    api.router.beforeEach(async (to, from) => {
+    api.router.beforeEach((to, from) => {
         if (to.path === "/singleplayer/custom") {
             api.session.offlineBattle.value = defaultBattle();
+            api.session.offlineBattle.value.open();
         } else if (from.path === "/singleplayer/custom") {
             api.session.offlineBattle.value = null;
         }

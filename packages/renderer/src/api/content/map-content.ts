@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosAdapter } from "axios";
 import * as fs from "fs";
 import { removeFromArray } from "jaz-ts-utils";
 import * as path from "path";
@@ -15,6 +15,8 @@ export class MapContentAPI extends AbstractContentAPI {
     public readonly mapsPath: string = path.join(api.info.contentPath, "maps");
     public readonly mapImagesPath: string = path.join(api.info.contentPath, "map-images");
     public readonly mapCache: MapCacheWorkerHost;
+
+    protected axiosHttpAdapter?: AxiosAdapter;
 
     constructor() {
         super();
@@ -75,14 +77,14 @@ export class MapContentAPI extends AbstractContentAPI {
         };
     }
 
-    public async downloadMaps(scriptNames: string[], host = contentSources.maps.http[0]) {
+    public async installMaps(scriptNames: string[], host = contentSources.maps.http[0]) {
         for (const scriptName of scriptNames) {
-            await this.downloadMapByScriptName(scriptName, host);
+            await this.installMapByScriptName(scriptName, host);
         }
     }
 
     // currently reliant on springfiles for scriptname lookup
-    public async downloadMapByScriptName(scriptName: string, host = contentSources.maps.http[0]!) {
+    public async installMapByScriptName(scriptName: string, host = contentSources.maps.http[0]!) {
         if (this.getMapByScriptName(scriptName)) {
             return;
         }
@@ -103,10 +105,10 @@ export class MapContentAPI extends AbstractContentAPI {
             throw new Error(`${scriptName} not found on springfiles.springrts.com`);
         }
 
-        return this.downloadMapByFilename(mapResult.filename, mapResult.name, host);
+        return this.installMapByFilename(mapResult.filename, mapResult.name, host);
     }
 
-    public async downloadMapByFilename(filename: string, scriptName: string, host = contentSources.maps.http[0]!): Promise<void> {
+    public async installMapByFilename(filename: string, scriptName: string, host = contentSources.maps.http[0]!): Promise<void> {
         if (this.getMapByFileName(filename)) {
             return;
         }
@@ -133,7 +135,6 @@ export class MapContentAPI extends AbstractContentAPI {
                 method: "get",
                 responseType: "arraybuffer",
                 headers: { "Content-Type": "application/7z" },
-                adapter: require("axios/lib/adapters/http"),
                 onDownloadProgress: (progress) => {
                     downloadInfo.currentBytes = progress.loaded;
                     downloadInfo.totalBytes = progress.total;
@@ -159,7 +160,7 @@ export class MapContentAPI extends AbstractContentAPI {
             const nextMapHost = contentSources.maps.http[nextMapHostIndex];
             if (nextMapHost) {
                 console.log(`Trying next map host: ${nextMapHost}`);
-                return this.downloadMapByFilename(filename, nextMapHost);
+                return this.installMapByFilename(filename, nextMapHost);
             } else {
                 throw new Error(`Map ${filename} could not be downloaded from any of the configured map hosts`);
             }

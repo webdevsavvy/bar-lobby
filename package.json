@@ -45,7 +45,6 @@
     "@vue/compiler-sfc": "^3.2.29",
     "@vueuse/core": "^7.3.0",
     "ajv": "^8.7.1",
-    "axios": "^0.24.0",
     "bar-db": "^6.3.0",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.1",
@@ -60,14 +59,11 @@
     "luaparse": "^0.3.1",
     "node-7z": "^3.0.0",
     "node-json-db": "^1.6.0",
-    "octokit": "^1.7.1",
     "prettier": "^2.6.2",
     "primevue": "^3.16.2",
     "rimraf": "^3.0.2",
     "sass": "^1.52.1",
     "sass-loader": "^13.0.0",
-    "sdfz-demo-parser": "^4.7.0",
-    "spring-map-parser": "^4.3.5",
     "sqlite": "^4.1.1",
     "sqlite3": "^5.0.8",
     "tsconfig-paths": "^3.12.0",
@@ -91,6 +87,10 @@
   },
   "devDependencies": {
     "tachyon-client": "^3.12.2",
-    "vite-plugin-esmodule": "^1.4.2"
+    "sdfz-demo-parser": "^4.7.0",
+    "spring-map-parser": "^4.3.5",
+    "vite-plugin-esmodule": "^1.4.2",
+    "octokit": "^1.7.1",
+    "axios": "^0.24.0"
   }
 }

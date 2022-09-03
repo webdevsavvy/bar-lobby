@@ -103,7 +103,7 @@ const onPreloadDone = async () => {
         // TODO: fix the slight delay these cause on startup, probably best to move them into worker threads
         api.content.engine.downloadLatestEngine();
         api.content.game.updateGame();
-        api.content.maps.downloadMaps(defaultMaps);
+        api.content.maps.installMaps(defaultMaps);
 
         state.value = "default";
     }
@@ -114,8 +114,6 @@ const onPreloadDone = async () => {
 const onInitialSetupDone = () => {
     state.value = "default";
 };
-
-router.replace("/");
 
 const leftClick = () => api.utils.onLeftClick.dispatch();
 const rightClick = () => api.utils.onRightClick.dispatch();
