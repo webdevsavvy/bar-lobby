@@ -83,8 +83,7 @@ const onIntroEnd = () => {
 const onPreloadDone = async () => {
     console.time("onPreloadDone");
 
-    // TODO: init all content apis here
-
+    // TODO: init all content apis here, but can't do that until we have a better state flow setup
     await api.content.engine.init();
 
     // TODO: should also check to see if game and maps are installed (need to fix bug where interrupted game dl reports as successful install)

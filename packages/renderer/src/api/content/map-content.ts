@@ -1,4 +1,4 @@
-import axios, { AxiosAdapter } from "axios";
+import axios from "axios";
 import * as fs from "fs";
 import { removeFromArray } from "jaz-ts-utils";
 import * as path from "path";
@@ -15,8 +15,6 @@ export class MapContentAPI extends AbstractContentAPI {
     public readonly mapsPath: string = path.join(api.info.contentPath, "maps");
     public readonly mapImagesPath: string = path.join(api.info.contentPath, "map-images");
     public readonly mapCache: MapCacheWorkerHost;
-
-    protected axiosHttpAdapter?: AxiosAdapter;
 
     constructor() {
         super();

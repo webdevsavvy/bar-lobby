@@ -6,6 +6,9 @@ import { defineConfig } from "vite";
 import renderer from "vite-plugin-electron-renderer";
 import esmodule from "vite-plugin-esmodule";
 
+// eslint-disable-next-line no-restricted-imports
+import { chrome } from "../../.electron-vendors.cache.json";
+
 const PACKAGE_ROOT = __dirname;
 
 export default defineConfig({
@@ -27,7 +30,7 @@ export default defineConfig({
     },
     build: {
         sourcemap: true,
-        target: `es2022`,
+        target: `chrome${chrome}`,
         outDir: "dist",
         assetsDir: ".",
         rollupOptions: {

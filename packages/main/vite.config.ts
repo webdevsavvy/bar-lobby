@@ -2,6 +2,7 @@ import { join } from "path";
 import { defineConfig } from "vite";
 
 // eslint-disable-next-line no-restricted-imports
+import { node } from "../../.electron-vendors.cache.json";
 
 const PACKAGE_ROOT = __dirname;
 
@@ -18,7 +19,7 @@ export default defineConfig({
     build: {
         ssr: true,
         sourcemap: "inline",
-        target: `es2022`,
+        target: `node${node}`,
         outDir: "dist",
         assetsDir: ".",
         minify: process.env.MODE !== "development",

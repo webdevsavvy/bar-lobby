@@ -10,22 +10,19 @@
   },
   "main": "packages/main/dist/index.cjs",
   "scripts": {
-    "dev": "vue-cli-service electron:serve",
-    "build": "cross-env NODE_ENV=production npm run clean-dist && vue-cli-service electron:build",
+    "dev": "node scripts/watch.mjs",
+    "build": "npm run vite:main && npm run vite:renderer",
+    "build:main": "cd ./packages/main && vite build",
+    "build:renderer": "cd ./packages/renderer && vite build",
     "lint-check": "eslint . --ext .ts,.vue",
     "lint": "eslint . --ext .ts,.vue --fix",
     "format-check": "prettier --check src/**/*.{ts,vue,scss,json}",
     "format": "prettier --write src/**/*.{ts,vue,scss,json}",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "clean-dist": "rimraf dist_electron",
     "dump-webpack-config": "vue inspect > output.js",
     "preversion": "npm run lint-check && npm run format-check",
-    "postversion": "git push && git push --tags",
-    "vite": "npm run vite:main && npm run vite:renderer",
-    "vite:main": "cd ./packages/main && vite build",
-    "vite:renderer": "cd ./packages/renderer && vite build",
-    "watch": "node scripts/watch.mjs"
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@iconify-icons/mdi": "^1.2.14",
