@@ -1,6 +1,12 @@
-.DS_Store
 node_modules
-/dist
+.DS_Store
+dist
+*.local
+thumbs.db
+
+.eslintcache
+.browserslistrc
+.electron-vendors.cache.json
 
 
 # local env files

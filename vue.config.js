@@ -6,7 +6,7 @@ module.exports = {
         loaderOptions: {
             scss: {
                 additionalData: `
-                    @use "@/assets/styles/_utils.scss";
+                    @use "!//styles/_utils.scss";
                 `,
             },
         },
