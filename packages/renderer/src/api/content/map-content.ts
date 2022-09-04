@@ -6,7 +6,6 @@ import { reactive } from "vue";
 
 import { AbstractContentAPI } from "@/api/content/abstract-content-api";
 import { contentSources } from "@/config/content-sources";
-import { MapCacheWorkerHost } from "@/workers/map-cache-worker";
 import type { DownloadInfo, SpringFilesMapMeta } from "$/model/downloads";
 import type { MapData } from "$/model/map-data";
 
@@ -14,12 +13,12 @@ export class MapContentAPI extends AbstractContentAPI {
     public readonly installedMaps: Map<string, MapData> = reactive(new Map());
     public readonly mapsPath: string = path.join(api.info.contentPath, "maps");
     public readonly mapImagesPath: string = path.join(api.info.contentPath, "map-images");
-    public readonly mapCache: MapCacheWorkerHost;
+    //public readonly mapCache: MapCacheWorkerHost;
 
     constructor() {
         super();
 
-        this.mapCache = new MapCacheWorkerHost(new Worker(new URL("../../workers/map-cache-worker.ts", import.meta.url), { type: "module" }));
+        //this.mapCache = new MapCacheWorkerHost(new Worker(new URL("../../workers/map-cache-worker.ts", import.meta.url), { type: "module" }));
     }
 
     // TODO: this should await for map cache to be loaded
@@ -29,21 +28,21 @@ export class MapContentAPI extends AbstractContentAPI {
         const cacheStoreDir = path.join(api.info.contentPath, "store");
         const mapCacheFile = path.join(cacheStoreDir, "map-cache.json");
 
-        this.mapCache.on("cache-loaded").add((maps: Record<string, MapData>) => {
-            for (const [filename, mapData] of Object.entries(maps)) {
-                this.installedMaps.set(mapData.scriptName, mapData);
-            }
-        });
+        // this.mapCache.on("cache-loaded").add((maps: Record<string, MapData>) => {
+        //     for (const [filename, mapData] of Object.entries(maps)) {
+        //         this.installedMaps.set(mapData.scriptName, mapData);
+        //     }
+        // });
 
-        this.mapCache.on("cache-saved").add((maps: Record<string, MapData>) => {
-            for (const [filename, mapData] of Object.entries(maps)) {
-                this.installedMaps.set(mapData.scriptName, mapData);
-            }
-        });
+        // this.mapCache.on("cache-saved").add((maps: Record<string, MapData>) => {
+        //     for (const [filename, mapData] of Object.entries(maps)) {
+        //         this.installedMaps.set(mapData.scriptName, mapData);
+        //     }
+        // });
 
-        await this.mapCache.init([mapCacheFile, api.info.contentPath, api.info.appPath]);
+        // await this.mapCache.init([mapCacheFile, api.info.contentPath, api.info.appPath]);
 
-        this.mapCache.cacheItems();
+        // this.mapCache.cacheItems();
 
         return this;
     }
@@ -151,7 +150,7 @@ export class MapContentAPI extends AbstractContentAPI {
             removeFromArray(this.currentDownloads, downloadInfo);
             this.onDownloadComplete.dispatch(downloadInfo);
 
-            this.mapCache.cacheItem(dest);
+            // this.mapCache.cacheItem(dest);
         } catch (err) {
             console.error(`Failed to download map ${filename} from ${host}:`, err);
             const nextMapHostIndex = contentSources.maps.http.indexOf(host) + 1;
@@ -179,7 +178,7 @@ export class MapContentAPI extends AbstractContentAPI {
             await fs.promises.rm(mapImagePath, { force: true });
         }
 
-        this.mapCache.clearItem(map.fileNameWithExt);
+        // this.mapCache.clearItem(map.fileNameWithExt);
         this.installedMaps.delete(scriptName);
 
         console.log(`Map ${scriptName} uninstalled`);

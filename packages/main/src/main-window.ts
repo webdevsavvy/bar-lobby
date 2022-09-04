@@ -77,6 +77,18 @@ export class MainWindow {
             import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL !== undefined ? import.meta.env.VITE_DEV_SERVER_URL : new URL("../renderer/dist/index.html", "file://" + __dirname).toString();
 
         await this.window.loadURL(pageUrl);
+
+        console.log(import.meta.env.DEV);
+        console.log(import.meta.env.VITE_DEV_SERVER_URL);
+
+        if (import.meta.env.DEV && import.meta.env.VITE_DEV_SERVER_URL !== undefined) {
+            this.window.webContents.openDevTools();
+        } else {
+            // await autoUpdater.checkForUpdatesAndNotify({
+            //     title: "BAR Lobby Updated",
+            //     body: "The Beyond All Reason lobby has been updated to the latest version.",
+            // });
+        }
     }
 
     public show() {
