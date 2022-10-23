@@ -13,7 +13,7 @@ import { apiInit } from "@/api/api";
 import App from "@/App.vue";
 import { clickAwayDirective } from "@/utils/click-away-directive";
 
-declare module "vue-router" {
+declare module "vue-router/auto" {
     interface RouteMeta {
         title?: string;
         order?: number;

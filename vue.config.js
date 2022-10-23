@@ -1,4 +1,5 @@
 const path = require("path");
+const UnpluginVueRouter = require("unplugin-vue-router/webpack").default;
 
 module.exports = {
     lintOnSave: true,
@@ -65,15 +66,17 @@ module.exports = {
             },
             chainWebpackRendererProcess: (config) => {
                 config.target("electron-renderer");
+                config
+                    .plugin("unplugin")
+                    .use(
+                        UnpluginVueRouter({
+                            routesFolder: "src/components/views",
+                            importMode: "sync",
+                            dts: "./src/typed-router.d.ts",
+                        })
+                    )
+                    .before("cache-loader");
             },
-        },
-        autoRouting: {
-            pages: "src/views",
-            chunkNamePrefix: "view-",
-            importPrefix: "@/views/",
-            nested: false,
-            dynamicImport: false,
-            outFile: "src/routes.ts",
         },
     },
 };

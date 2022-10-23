@@ -3,7 +3,7 @@ import { ipcRenderer } from "electron";
 import * as fs from "fs";
 import { Kysely, SqliteDialect } from "kysely";
 import * as path from "path";
-import { createMemoryHistory, createRouter, Router } from "vue-router";
+import { createMemoryHistory, createRouter, Router } from "vue-router/auto";
 
 import { AlertsAPI } from "@/api/alerts";
 import { AudioAPI } from "@/api/audio";
@@ -20,7 +20,6 @@ import { CacheDatabase } from "@/model/cache-database";
 import type { Info } from "@/model/info";
 import type { SettingsType } from "@/model/settings";
 import { settingsSchema } from "@/model/settings";
-import routes from "@/routes";
 import { SerializePlugin } from "@/utils/serialize-json-plugin";
 
 interface API {
@@ -63,7 +62,6 @@ export async function apiInit() {
 
     api.router = createRouter({
         history: createMemoryHistory(),
-        routes: routes,
     });
 
     api.router.beforeResolve(async (to) => {
