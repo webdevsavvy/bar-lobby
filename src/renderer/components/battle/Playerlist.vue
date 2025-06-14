@@ -42,7 +42,7 @@ import { Ref, ref } from "vue";
 import AddBotModal from "@renderer/components/battle/AddBotModal.vue";
 import TeamComponent from "@renderer/components/battle/TeamComponent.vue";
 import { EngineAI } from "@main/content/engine/engine-version";
-import { Bot, isBot, isRaptor, isScavenger, Player } from "@main/game/battle/battle-types";
+import { Bot, isBot, isRaptor, isScavenger, isScavengerOrRaptor, Player } from "@main/game/battle/battle-types";
 import { battleWithMetadataStore, battleStore, battleActions } from "@renderer/store/battle.store";
 import SpectatorsComponent from "@renderer/components/battle/SpectatorsComponent.vue";
 import { GameAI } from "@main/content/game/game-version";
@@ -118,6 +118,7 @@ function dragStart(event: DragEvent, participant: Player | Bot) {
     if (participantEl) {
         participantEl.classList.add("dragging");
     }
+    document.addEventListener('dragend', dragEnd);
 }
 
 function dragEnd() {
@@ -132,6 +133,7 @@ function dragEnd() {
         el.classList.remove("highlight");
         el.classList.remove("highlight-error");
     });
+    document.removeEventListener('dragend', dragEnd);
 }
 
 function onDropTeam(event: DragEvent, teamId: number) {
@@ -143,8 +145,9 @@ function onDropTeam(event: DragEvent, teamId: number) {
         return;
     }
     if (draggedBot.value) {
-        if ((isRaptor(draggedBot.value) || isScavenger(draggedBot.value)) && battleStore.teams[teamId].participants.length != 0) {
+        if (isScavengerOrRaptor(draggedBot.value) && battleStore.teams[teamId].participants.length != 0) {
             draggedBot.value = null;
+            draggedEl = null;
         } else {
             battleActions.moveBotToTeam(draggedBot.value, teamId);
         }
@@ -159,6 +162,10 @@ function onDropSpectators(event: DragEvent) {
     if (draggedBot.value || !draggedPlayer.value || target.getAttribute("data-type") !== "group") {
         if (isBot(draggedBot.value) && (isRaptor(draggedBot.value) || isScavenger(draggedBot.value))) {
             draggedBot.value = null;
+            document.querySelectorAll("[data-type=group]").forEach((el) => {
+                el.classList.remove("highlight");
+                el.classList.remove("highlight-error");
+            });
         }
         return;
     }
