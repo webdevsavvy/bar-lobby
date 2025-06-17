@@ -41,7 +41,7 @@ export abstract class PrDownloaderAPI<ID, T> extends AbstractContentAPI<ID, T> {
         const cacertPath = path.resolve(`${__dirname}/../resources/cacert.pem`);
         process.env["PRD_SSL_CERT_FILE"] = cacertPath;
 
-        console.log(cacertPath);
+        log.info(cacertPath);
         // if (process.platform == "win32" && !("PRD_SSL_CERT_FILE" in process.env)) {
         // }
     }

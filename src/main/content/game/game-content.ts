@@ -33,10 +33,10 @@ export class GameContentAPI extends PrDownloaderAPI<string, GameVersion> {
     public gameVersionPackageLookup: { [gameVersion: string]: string | undefined } = {};
 
     public override async init() {
+        this.setupTLSCertificates();
         await this.initLookupTables();
         await this.scanPackagesDir();
         await this.scanLocalGames();
-        super.setupTLSCertificates();
         return this;
     }
 
