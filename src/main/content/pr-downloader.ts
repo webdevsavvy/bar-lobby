@@ -4,6 +4,7 @@
 
 import { spawn } from "child_process";
 import os from "os";
+import fs from "fs";
 import path from "path";
 
 import { DownloadInfo } from "./downloads";
@@ -36,6 +37,15 @@ export type RapidVersion = {
  * https://springrts.com/wiki/Rapid
  */
 export abstract class PrDownloaderAPI<ID, T> extends AbstractContentAPI<ID, T> {
+    protected setupTLSCertificates() {
+        const cacertPath = path.resolve(`${__dirname}/../resources/cacert.pem`);
+        process.env["PRD_SSL_CERT_FILE"] = cacertPath;
+
+        console.log(cacertPath);
+        // if (process.platform == "win32" && !("PRD_SSL_CERT_FILE" in process.env)) {
+        // }
+    }
+
     protected downloadContent(type: "game" | "map", name: string) {
         return new Promise<DownloadInfo>((resolve, reject) => {
             try {
