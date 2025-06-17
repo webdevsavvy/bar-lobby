@@ -36,6 +36,7 @@ export class GameContentAPI extends PrDownloaderAPI<string, GameVersion> {
         await this.initLookupTables();
         await this.scanPackagesDir();
         await this.scanLocalGames();
+        super.setupTLSCertificates();
         return this;
     }
 
